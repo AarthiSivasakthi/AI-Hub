@@ -1,10 +1,12 @@
-import { Link } from "@tanstack/react-router";
-import { Brain, Menu, Moon, Search, Sun, X } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Brain, LogOut, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
 
 const links = [
   { to: "/", key: "nav.home" },
@@ -18,6 +20,12 @@ export function Navbar() {
   const { t, lang, setLang } = useLanguage();
   const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", search: { mode: "login" }, replace: true });
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
@@ -74,14 +82,25 @@ export function Navbar() {
             {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
           </button>
 
-          <div className="hidden items-center gap-2 md:flex">
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/about">{t("nav.login")}</Link>
-            </Button>
-            <Button size="sm" asChild>
-              <Link to="/tools">{t("nav.signup")}</Link>
-            </Button>
-          </div>
+          {user ? (
+            <div className="hidden items-center gap-2 md:flex">
+              <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground" title={user.email ?? ""}>
+                {(user.user_metadata?.full_name || user.email || "?").charAt(0).toUpperCase()}
+              </span>
+              <Button variant="ghost" size="sm" onClick={signOut}>
+                <LogOut className="size-4" /> Log out
+              </Button>
+            </div>
+          ) : (
+            <div className="hidden items-center gap-2 md:flex">
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/auth" search={{ mode: "login" }}>{t("nav.login")}</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link to="/auth" search={{ mode: "signup" }}>{t("nav.signup")}</Link>
+              </Button>
+            </div>
+          )}
 
           <button
             onClick={() => setOpen((v) => !v)}
