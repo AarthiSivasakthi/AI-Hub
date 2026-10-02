@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
 
@@ -48,6 +49,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsIndexRoute = ToolsIndexRouteImport.update({
   id: '/tools/',
   path: '/tools/',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRoute
   '/learn': typeof LearnRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/api/chat': typeof ApiChatRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/tools/': typeof ToolsIndexRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRoute
   '/learn': typeof LearnRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/api/chat': typeof ApiChatRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/tools': typeof ToolsIndexRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRoute
   '/learn': typeof LearnRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/api/chat': typeof ApiChatRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/tools/': typeof ToolsIndexRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/learn'
     | '/reset-password'
+    | '/api/chat'
     | '/tools/$slug'
     | '/tools/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/learn'
     | '/reset-password'
+    | '/api/chat'
     | '/tools/$slug'
     | '/tools'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/learn'
     | '/reset-password'
+    | '/api/chat'
     | '/tools/$slug'
     | '/tools/'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRoute
   LearnRoute: typeof LearnRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiChatRoute: typeof ApiChatRoute
   ToolsSlugRoute: typeof ToolsSlugRoute
   ToolsIndexRoute: typeof ToolsIndexRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/': {
       id: '/tools/'
       path: '/tools'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRoute,
   LearnRoute: LearnRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiChatRoute: ApiChatRoute,
   ToolsSlugRoute: ToolsSlugRoute,
   ToolsIndexRoute: ToolsIndexRoute,
 }
