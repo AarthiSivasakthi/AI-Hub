@@ -126,12 +126,26 @@ export function Navbar() {
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {(["en", "ta"] as const).map((l) => (
               <Button key={l} variant={lang === l ? "default" : "outline"} size="sm" onClick={() => setLang(l)}>
                 {l === "en" ? "English" : "தமிழ்"}
               </Button>
             ))}
+            {user ? (
+              <Button variant="outline" size="sm" className="md:hidden" onClick={() => { setOpen(false); signOut(); }}>
+                <LogOut className="size-4" /> Log out
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline" size="sm" className="md:hidden" asChild>
+                  <Link to="/auth" search={{ mode: "login" }} onClick={() => setOpen(false)}>{t("nav.login")}</Link>
+                </Button>
+                <Button size="sm" className="md:hidden" asChild>
+                  <Link to="/auth" search={{ mode: "signup" }} onClick={() => setOpen(false)}>{t("nav.signup")}</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
