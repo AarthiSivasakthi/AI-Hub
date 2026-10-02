@@ -11,7 +11,7 @@ type Mode = "login" | "signup" | "forgot";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({
-    mode: (s.mode === "signup" ? "signup" : "login") as "login" | "signup",
+    mode: (s["mode"] === "signup" ? "signup" : "login") as "login" | "signup",
   }),
   head: () => ({
     meta: [
@@ -65,7 +65,7 @@ function AuthPage() {
     e.preventDefault();
     setError(null);
     const em = emailSchema.safeParse(email);
-    if (!em.success) return setError(em.error.issues[0].message);
+    if (!em.success) return setError(em.error.issues[0]?.message ?? "Enter a valid email address");
 
     if (mode === "forgot") {
       setBusy(true);
@@ -80,7 +80,7 @@ function AuthPage() {
     if (step === "email") return setStep("password");
 
     const pw = passwordSchema.safeParse(password);
-    if (mode === "signup" && !pw.success) return setError(pw.error.issues[0].message);
+    if (mode === "signup" && !pw.success) return setError(pw.error.issues[0]?.message ?? "Use at least 8 characters");
 
     setBusy(true);
     if (mode === "login") {

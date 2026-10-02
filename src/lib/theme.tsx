@@ -11,14 +11,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
+    // Default to light ("bright") mode unless the user explicitly chose dark.
     const stored = window.localStorage.getItem("aihub-theme");
-    const initial: Theme =
-      stored === "dark" || stored === "light"
-        ? stored
-        : window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-    setTheme(initial);
+    setTheme(stored === "dark" ? "dark" : "light");
   }, []);
 
   useEffect(() => {

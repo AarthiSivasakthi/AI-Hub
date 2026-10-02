@@ -14,7 +14,8 @@ export function Quiz({ questions }: { questions: QuizQuestion[] }) {
   const [done, setDone] = useState(false);
 
   const q = questions[index];
-  const score = answers.filter((a, i) => a === questions[i].correctIndex).length;
+  if (!q) return null;
+  const score = answers.filter((a, i) => a === questions[i]?.correctIndex).length;
 
   const reset = () => {
     setIndex(0);
