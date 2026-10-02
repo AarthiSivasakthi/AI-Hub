@@ -9,7 +9,7 @@ export const Route = createFileRoute("/api/chat")({
         const { createLovableAiGatewayRunIdFetch, getLovableAiGatewayRunId, withLovableAiGatewayRunIdHeader } =
           await import("@/lib/ai/run-id.server");
         const { buildMimoSystemPrompt } = await import("@/lib/ai/mimo-knowledge.server");
-        const apiKey = process.env.LOVABLE_API_KEY;
+        const apiKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey) return new Response("AI is not configured", { status: 500 });
 
         const body = (await request.json()) as { messages?: UIMessage[] };
