@@ -18,6 +18,8 @@ import { useLanguage } from "@/lib/i18n";
 export const Route = createFileRoute("/tools/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Explore 100+ AI Tools — AI Hub" },
       {
         name: "description",

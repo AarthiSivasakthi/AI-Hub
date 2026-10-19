@@ -8,6 +8,8 @@ import { getToolBySlug } from "@/data/tools";
 export const Route = createFileRoute("/learn")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "AI Learning Paths for Beginners — AI Hub" },
       {
         name: "description",
