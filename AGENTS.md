@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Use ExternalResource for lesson outbound links, with native new-tab navigation and a copyable URL; external providers cannot be reliably embedded or controlled by AI Hub.

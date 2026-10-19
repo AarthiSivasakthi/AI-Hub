@@ -1,10 +1,8 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useRouter, type ErrorComponentProps } from "@tanstack/react-router";
 import {
-  ArrowUpRight,
   Bookmark,
   BookmarkCheck,
   Clock,
-  ExternalLink,
   PlayCircle,
 } from "lucide-react";
 
@@ -13,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { PracticeBox } from "@/components/PracticeBox";
 import { Quiz } from "@/components/Quiz";
 import { ToolCard } from "@/components/ToolCard";
+import { ExternalResource } from "@/components/ExternalResource";
 import { buildLesson } from "@/data/lessonContent";
 import { TOOLS, getToolBySlug } from "@/data/tools";
 import { useLanguage } from "@/lib/i18n";
@@ -37,11 +36,28 @@ export const Route = createFileRoute("/tools/$slug")({
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
     };
   },
   component: ToolDetail,
+  errorComponent: ToolError,
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-5xl px-4 py-14">
+      <h1 className="text-2xl font-semibold">Tool not found</h1>
+      <Button asChild className="mt-4"><Link to="/tools">Explore AI tools</Link></Button>
+    </div>
+  ),
 });
+
+function ToolError({ reset }: ErrorComponentProps) {
+  const router = useRouter();
+  return <div className="mx-auto max-w-5xl px-4 py-14">
+    <h1 className="text-2xl font-semibold">This lesson could not load</h1>
+    <Button className="mt-4" onClick={async () => { await router.invalidate(); reset(); }}>Try again</Button>
+  </div>;
+}
 
 function ToolDetail() {
   const { tool } = Route.useLoaderData();
@@ -81,12 +97,11 @@ function ToolDetail() {
               {saved ? <BookmarkCheck className="size-4" /> : <Bookmark className="size-4" />}
               {saved ? t("tool.saved") : t("tool.save")}
             </Button>
-            <Button variant="outline" asChild>
-              <a href={tool.website} target="_blank" rel="noreferrer noopener">
-                Visit website
-                <ExternalLink className="size-4" />
-              </a>
-            </Button>
+            {tool.websiteAvailable !== false ? (
+              <ExternalResource href={tool.website} label="Visit website" />
+            ) : (
+              <p className="text-sm text-primary-foreground">Tome’s presentation service has closed.</p>
+            )}
           </div>
         </div>
       </header>
@@ -132,22 +147,14 @@ function ToolDetail() {
         </Section>
 
         <Section title={t("video.title")}>
-          <a
-            href={`https://www.youtube.com/results?search_query=${encodeURIComponent(lesson.videoSearch)}`}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="card-hover flex items-center gap-4 rounded-2xl border border-border bg-card p-6 shadow-card"
-          >
-            <PlayCircle className="size-10 text-primary" />
-            <div>
-              <p className="font-semibold">Curated tutorials for {tool.name}</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Opens a hand-written search for beginner-friendly walkthroughs. Editor-picked embedded
-                videos are added per tool as the library grows.
-              </p>
+          <div className="flex items-start gap-4">
+            <PlayCircle className="size-10 shrink-0 text-primary" />
+            <div className="min-w-0 space-y-3">
+              <h3 className="font-semibold">{tool.name} beginner tutorials</h3>
+              <ExternalResource href={`https://www.youtube.com/results?search_query=${encodeURIComponent(lesson.videoSearch)}`} label="Find tutorials on YouTube" />
+              <p className="text-sm text-muted-foreground">If YouTube or a tool website stays blank, open the copied link in your browser. External sites may require sign-in or be unavailable in your region.</p>
             </div>
-            <ArrowUpRight className="ml-auto size-5 text-muted-foreground" />
-          </a>
+          </div>
         </Section>
 
         <div className="grid gap-5 md:grid-cols-3">

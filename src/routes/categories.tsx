@@ -6,6 +6,8 @@ import { categoryCounts } from "@/data/tools";
 export const Route = createFileRoute("/categories")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "AI Tool Categories — AI Hub" },
       {
         name: "description",
