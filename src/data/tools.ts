@@ -10,6 +10,7 @@ export interface AiTool {
   difficulty: Difficulty;
   shortDescription: string;
   website: string;
+  websiteAvailable?: boolean;
   featured: boolean;
   learningMinutes: number;
   tags: string[];
@@ -52,7 +53,7 @@ type Row = [
 ];
 
 const ROWS: Row[] = [
-  ["ChatGPT", "AI Assistants", "Freemium", "Beginner", "Chat-based assistant that answers questions, writes text and explains ideas.", "https://chat.openai.com", true],
+  ["ChatGPT", "AI Assistants", "Freemium", "Beginner", "Chat-based assistant that answers questions, writes text and explains ideas.", "https://chatgpt.com", true],
   ["Claude", "AI Assistants", "Freemium", "Beginner", "Careful, long-context assistant that is strong at reading documents.", "https://claude.ai", true],
   ["Gemini", "AI Assistants", "Freemium", "Beginner", "Google's assistant, connected to Search, Docs and Gmail.", "https://gemini.google.com", true],
   ["Microsoft Copilot", "AI Assistants", "Freemium", "Beginner", "AI helper built into Windows and Microsoft 365 apps.", "https://copilot.microsoft.com", true],
@@ -107,7 +108,7 @@ const ROWS: Row[] = [
   ["Replit Agent", "Coding", "Freemium", "Beginner", "Builds and hosts small apps from a description.", "https://replit.com"],
   ["Windsurf", "Coding", "Freemium", "Intermediate", "AI-first editor that works across your whole repo.", "https://windsurf.com"],
   ["Claude Code", "Coding", "Paid", "Advanced", "Terminal coding agent for real repositories.", "https://claude.com/product/claude-code"],
-  ["Codeium", "Coding", "Freemium", "Beginner", "Free code completion for many editors.", "https://codeium.com"],
+  ["Codeium", "Coding", "Freemium", "Beginner", "Free code completion for many editors.", "https://devin.ai/desktop"],
   ["Tabnine", "Coding", "Freemium", "Intermediate", "Privacy-focused code completion for teams.", "https://tabnine.com"],
   ["Sourcegraph Cody", "Coding", "Freemium", "Intermediate", "Answers questions about large codebases.", "https://sourcegraph.com/cody"],
   ["CodeRabbit", "Coding", "Paid", "Advanced", "Automated AI code review on pull requests.", "https://coderabbit.ai"],
@@ -138,7 +139,7 @@ const ROWS: Row[] = [
   ["Buffer AI Assistant", "Marketing", "Freemium", "Beginner", "Writes and repurposes social posts.", "https://buffer.com"],
   ["Figma AI", "Design", "Freemium", "Intermediate", "Design suggestions and content fill inside Figma.", "https://figma.com"],
   ["Uizard", "Design", "Freemium", "Beginner", "Turns sketches and prompts into UI mockups.", "https://uizard.io"],
-  ["Galileo AI", "Design", "Paid", "Intermediate", "Generates editable product UI designs.", "https://usegalileo.ai"],
+  ["Galileo AI", "Design", "Paid", "Intermediate", "Generates editable product UI designs.", "https://stitch.withgoogle.com"],
   ["Looka", "Design", "Paid", "Beginner", "Creates logos and brand kits automatically.", "https://looka.com"],
   ["Khroma", "Design", "Free", "Beginner", "Learns your taste and generates colour palettes.", "https://khroma.co"],
   ["Gamma", "Presentation", "Freemium", "Beginner", "Builds presentations and docs from a prompt.", "https://gamma.app"],
@@ -196,6 +197,7 @@ export const TOOLS: AiTool[] = ROWS.map(
     difficulty,
     shortDescription,
     website,
+    websiteAvailable: name !== "Tome",
     featured: Boolean(featured),
     learningMinutes: minutesFor(difficulty),
     tags: [category, difficulty, pricing],
