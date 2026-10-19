@@ -26,7 +26,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const emailSchema = z.string().trim().email("Enter a valid email address").max(255);
+const usernameSchema = z.string().trim().toLowerCase().regex(/^[a-z0-9_.]{3,30}$/, "Username must be 3–30 letters, numbers, _ or .");
+const toEmail = (u: string) => `${u}@users.aihub.app`;
 const passwordSchema = z.string().min(8, "Password must be at least 8 characters").max(72);
 
 function AuthPage() {
@@ -64,8 +65,9 @@ function AuthPage() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    const em = emailSchema.safeParse(email);
-    if (!em.success) return setError(em.error.issues[0]?.message ?? "Enter a valid email address");
+    const un = usernameSchema.safeParse(email);
+    if (!un.success) return setError(un.error.issues[0]?.message ?? "Enter a valid username");
+    const em = { data: toEmail(un.data) };
 
     if (mode === "forgot") {
       setBusy(true);
@@ -86,16 +88,16 @@ function AuthPage() {
     if (mode === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email: em.data, password });
       setBusy(false);
-      if (error) setError(error.message === "Invalid login credentials" ? "Wrong email or password." : error.message);
+      if (error) setError(error.message === "Invalid login credentials" ? "Wrong username or password." : error.message);
     } else {
       const { data, error } = await supabase.auth.signUp({
         email: em.data,
         password,
-        options: { emailRedirectTo: window.location.origin, data: { full_name: name.trim() || undefined } },
+        options: { data: { username: un.data, full_name: name.trim() || un.data } },
       });
       setBusy(false);
-      if (error) return setError(error.message);
-      if (!data.session) setSent("confirm");
+      if (error) return setError(/already/i.test(error.message) ? "That username is taken." : error.message);
+      if (!data.session) setError("Could not sign you in. Please try logging in.");
     }
   };
 
@@ -137,7 +139,7 @@ function AuthPage() {
                   {mode === "signup" && (
                     <Field label="Your name" value={name} onChange={setName} autoComplete="name" />
                   )}
-                  <Field label="Email address" type="email" value={email} onChange={setEmail} autoComplete="email" autoFocus />
+                  <Field label="Username" value={email} onChange={setEmail} autoComplete="username" autoFocus />
                 </>
               ) : (
                 <>
@@ -169,11 +171,6 @@ function AuthPage() {
                   </div>
                   {mode === "signup" && (
                     <p className="px-1 text-xs text-muted-foreground">Use at least 8 characters.</p>
-                  )}
-                  {mode === "login" && (
-                    <button type="button" onClick={() => switchMode("forgot")} className="px-1 text-sm font-medium text-primary hover:underline">
-                      Forgot password?
-                    </button>
                   )}
                 </>
               )}

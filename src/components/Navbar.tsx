@@ -84,7 +84,7 @@ export function Navbar() {
 
           {user ? (
             <div className="hidden items-center gap-2 md:flex">
-              <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground" title={user.email ?? ""}>
+              <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground" title={String(user.user_metadata?.["username"] ?? "")}>
                 {(user.user_metadata?.["full_name"] || user.email || "?").charAt(0).toUpperCase()}
               </span>
               <Button variant="ghost" size="sm" onClick={signOut}>
