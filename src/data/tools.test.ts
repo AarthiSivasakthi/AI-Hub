@@ -1,18 +1,19 @@
-import { describe, expect, it } from "bun:test";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 import { TOOLS, getToolBySlug } from "./tools";
 
 describe("official website destinations", () => {
   it("uses the current ChatGPT address", () => {
-    expect(getToolBySlug("chatgpt")?.website).toBe("https://chatgpt.com");
+    assert.equal(getToolBySlug("chatgpt")?.website, "https://chatgpt.com");
   });
   it("does not offer the closed Tome service as available", () => {
-    expect(getToolBySlug("tome")?.websiteAvailable).toBe(false);
+    assert.equal(getToolBySlug("tome")?.websiteAvailable, false);
   });
   it("provides an absolute HTTPS destination for every tool", () => {
     for (const tool of TOOLS) {
       const url = new URL(tool.website);
-      expect(url.protocol).toBe("https:");
-      expect(url.hostname.length).toBeGreaterThan(0);
+      assert.equal(url.protocol, "https:");
+      assert.ok(url.hostname.length > 0);
     }
   });
 });
