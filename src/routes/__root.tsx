@@ -15,7 +15,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { MimoChat } from "@/components/MimoChat";
-import { AuthGate } from "@/components/AuthGate";
 import { LanguageProvider } from "@/lib/i18n";
 import { ThemeProvider } from "@/lib/theme";
 import { SavedToolsProvider } from "@/lib/saved-tools";
@@ -148,7 +147,6 @@ function RootComponent() {
               <Footer />
             </div>
             <MimoChat />
-            <AuthGate />
           </SavedToolsProvider>
         </LanguageProvider>
       </ThemeProvider>
