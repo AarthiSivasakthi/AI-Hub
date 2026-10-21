@@ -17,18 +17,22 @@ export function ExternalResource({ href, label }: { href: string; label: string 
   }
 
   return (
-    <div className="min-w-0 space-y-2">
+    <div className="min-w-0">
       <div className="flex flex-wrap items-center gap-2">
         <Button variant="outline" asChild>
           <a href={href} target="_blank" rel="noopener noreferrer">{label}<ExternalLink /></a>
         </Button>
-        <Button variant="ghost" size="icon" onClick={copyLink} title={copied ? "Link copied" : "Copy link"} aria-label={`Copy ${label} link`}>
+        <Button variant="outline" size="icon" onClick={copyLink} title={copied ? "Link copied" : "Copy link"} aria-label={`Copy ${label} link`}>
           {copied ? <Check /> : <Copy />}
         </Button>
         <span role="status" className="text-sm text-muted-foreground">{copied ? "Link copied" : ""}</span>
       </div>
-      <a href={href} target="_blank" rel="noopener noreferrer" className="block break-all text-xs text-muted-foreground underline underline-offset-4">{href}</a>
-      {copyFailed && <p role="status" className="text-sm text-muted-foreground">Could not copy. Select and copy the link above.</p>}
+      {copyFailed && (
+        <div className="mt-2 space-y-1">
+          <p role="status" className="text-sm text-muted-foreground">Could not copy. Open and copy this link:</p>
+          <a href={href} target="_blank" rel="noopener noreferrer" className="block break-all text-xs text-muted-foreground underline underline-offset-4">{href}</a>
+        </div>
+      )}
     </div>
   );
 }
