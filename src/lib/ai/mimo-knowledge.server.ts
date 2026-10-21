@@ -19,7 +19,7 @@ WEBSITE PAGES (link with markdown, e.g. [Tools](/tools)):
 - Categories (/categories): browse ${CATEGORIES.length} categories: ${CATEGORIES.join(", ")}.
 - Learn (/learn): guided learning paths.
 - About (/about): mission of AI Hub.
-- Log in / Sign up (/auth?mode=login, /auth?mode=signup): email + password or Continue with Google. Sign-up sends a verification email. Forgot password: /auth?mode=forgot.
+- No accounts: everyone can use AI Hub freely without logging in. Saved tools are kept on the device.
 - Bookmarks are saved in the browser. Language switch English / தமிழ் and light/dark toggle are in the top bar.
 
 LEARNING PATHS:
