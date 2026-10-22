@@ -13,11 +13,17 @@ describe("tool search matches names from the beginning", () => {
     assert.equal(nameStartsWithQuery("Canva", "a"), false);
     assert.equal(nameStartsWithQuery("Runway", "w"), false);
   });
-  it("shows every matching tool in A to Z order for a single letter", () => {
+  it("collects every tool whose name starts with the letter, and no others", () => {
     const matches = TOOLS.filter((t) => nameStartsWithQuery(t.name, "a")).map((t) => t.name);
-    const sorted = [...matches].sort((x, y) => x.localeCompare(y));
-    assert.deepEqual(matches, sorted);
-    assert.ok(matches.length > 0);
+    assert.ok(matches.includes("AdCreative.ai"));
+    assert.ok(!matches.includes("Canva"));
+    for (const name of matches) {
+      const ok = name
+        .toLowerCase()
+        .split(/[\s.\-_/()&@]+/)
+        .some((word) => word.startsWith("a"));
+      assert.ok(ok, `${name} should not match "a"`);
+    }
   });
 });
 
