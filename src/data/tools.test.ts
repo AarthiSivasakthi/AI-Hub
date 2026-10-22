@@ -5,9 +5,10 @@ import { TOOLS, getToolBySlug, nameStartsWithQuery } from "./tools";
 describe("tool search matches names from the beginning", () => {
   it("matches a tool whose name starts with the query", () => {
     assert.equal(nameStartsWithQuery("ChatGPT", "cha"), true);
+    assert.equal(nameStartsWithQuery("Adobe Firefly", "adobe f"), true);
   });
-  it("matches a word at the start of a multi-word name", () => {
-    assert.equal(nameStartsWithQuery("HeyGen Translate", "t"), true);
+  it("does not match a word later in the name", () => {
+    assert.equal(nameStartsWithQuery("HeyGen Translate", "t"), false);
   });
   it("does not match the letter inside a word", () => {
     assert.equal(nameStartsWithQuery("Canva", "a"), false);
