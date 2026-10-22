@@ -10,6 +10,7 @@ import {
   DIFFICULTY_OPTIONS,
   PRICING_OPTIONS,
   TOOLS,
+  nameStartsWithQuery,
   type Difficulty,
   type Pricing,
 } from "@/data/tools";
