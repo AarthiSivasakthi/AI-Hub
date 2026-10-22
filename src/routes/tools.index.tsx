@@ -10,6 +10,7 @@ import {
   DIFFICULTY_OPTIONS,
   PRICING_OPTIONS,
   TOOLS,
+  nameStartsWithQuery,
   type Difficulty,
   type Pricing,
 } from "@/data/tools";
@@ -52,10 +53,7 @@ function ToolsPage() {
     const order: Difficulty[] = ["Beginner", "Intermediate", "Advanced"];
     return TOOLS.filter(
       (tool) =>
-        (!q ||
-          tool.name.toLowerCase().includes(q) ||
-          tool.shortDescription.toLowerCase().includes(q) ||
-          tool.category.toLowerCase().includes(q)) &&
+        (!q || nameStartsWithQuery(tool.name, q)) &&
         (!category || tool.category === category) &&
         (!difficulty || tool.difficulty === difficulty) &&
         (!pricing || tool.pricing === pricing),
