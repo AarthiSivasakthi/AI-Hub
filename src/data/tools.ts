@@ -210,3 +210,15 @@ export const getToolBySlug = (slug: string) => TOOLS.find((t) => t.slug === slug
 
 export const categoryCounts = () =>
   CATEGORIES.map((c) => ({ category: c, count: TOOLS.filter((t) => t.category === c).length }));
+
+/** True when the tool NAME starts with the query (start of the whole name or of any word in it). */
+export function nameStartsWithQuery(name: string, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const n = name.toLowerCase();
+  if (n.startsWith(q)) return true;
+  return n
+    .split(/[\s.\-_/()&@]+/)
+    .filter(Boolean)
+    .some((word) => word.startsWith(q));
+}
